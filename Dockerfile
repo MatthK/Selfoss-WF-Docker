@@ -41,4 +41,6 @@ VOLUME /var/www/html/data
 
 RUN echo "*/15 *  * * *  root  curl -s http://localhost:8080/update\n" >> /etc/crontab
 
+HEALTHCHECK --interval=1m --timeout=3s CMD curl -f http://localhost/ || exit 1
+
 ENTRYPOINT /bin/bash -c "cron && composer install && cd /var/www/html/assets && npm run build && cd .. && apache2-foreground"
